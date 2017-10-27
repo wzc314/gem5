@@ -124,7 +124,7 @@ def get_processes(options):
     else:
         return multiprocesses, 1
 
-
+m5.disableAllListeners()
 parser = optparse.OptionParser()
 Options.addCommonOptions(parser)
 Options.addSEOptions(parser)
