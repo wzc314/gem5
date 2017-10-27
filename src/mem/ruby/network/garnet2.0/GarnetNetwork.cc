@@ -281,6 +281,21 @@ GarnetNetwork::regStats()
         .flags(Stats::oneline)
         ;
 
+    m_max_flit_latency_stats.name(name() + ".max_flit_latency");
+    m_max_packet_latency_stats.name(name() + ".max_packet_latency");
+
+    m_flit_latency_hist
+        .init(30)
+        .name(name() + ".flit_latency_hist")
+        .desc("")
+        .flags(Stats::nozero | Stats::pdf);
+
+    m_packet_latency_hist
+        .init(30)
+        .name(name() + ".packet_latency_hist")
+        .desc("")
+        .flags(Stats::nozero | Stats::pdf);
+
     for (int i = 0; i < m_virtual_networks; i++) {
         m_packets_received.subname(i, csprintf("vnet-%i", i));
         m_packets_injected.subname(i, csprintf("vnet-%i", i));
@@ -420,6 +435,9 @@ GarnetNetwork::collateStats()
             m_average_vc_load[j] += ((double)vc_load[j] / time_delta);
         }
     }
+
+    m_max_flit_latency_stats = m_max_flit_latency;
+    m_max_packet_latency_stats = m_max_packet_latency;
 
     // Ask the routers to collate their statistics
     for (int i = 0; i < m_routers.size(); i++) {

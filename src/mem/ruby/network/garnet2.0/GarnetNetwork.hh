@@ -122,6 +122,22 @@ class GarnetNetwork : public Network
         m_packet_queueing_latency[vnet] += latency;
     }
 
+    void
+    sample_flit_latency(Cycles latency)
+    {
+        m_flit_latency_hist.sample(latency);
+        if (latency > m_max_flit_latency)
+            m_max_flit_latency = latency;
+    }
+
+    void
+    sample_packet_latency(Cycles latency)
+    {
+        m_packet_latency_hist.sample(latency);
+        if (latency > m_max_packet_latency)
+            m_max_packet_latency = latency;
+    }
+
     void increment_injected_flits(int vnet) { m_flits_injected[vnet]++; }
     void increment_received_flits(int vnet) { m_flits_received[vnet]++; }
 
@@ -154,6 +170,9 @@ class GarnetNetwork : public Network
     int m_routing_algorithm;
     bool m_enable_fault_model;
 
+    Cycles m_max_flit_latency;
+    Cycles m_max_packet_latency;
+
     // Statistical variables
     Stats::Vector m_packets_received;
     Stats::Vector m_packets_injected;
@@ -185,6 +204,11 @@ class GarnetNetwork : public Network
 
     Stats::Scalar  m_total_hops;
     Stats::Formula m_avg_hops;
+
+    Stats::Histogram m_flit_latency_hist;
+    Stats::Histogram m_packet_latency_hist;
+    Stats::Scalar m_max_flit_latency_stats;
+    Stats::Scalar m_max_packet_latency_stats;
 
   private:
     GarnetNetwork(const GarnetNetwork& obj);

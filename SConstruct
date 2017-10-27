@@ -1018,7 +1018,7 @@ if main['USE_PYTHON']:
     # scons with the appropriate PATH set.
     #
     # First we check if python2-config exists, else we use python-config
-    python_config = readCommand(['which', 'python2-config'],
+    python_config = readCommand(['which', 'python2.6-config'],
                                 exception='').strip()
     if not os.path.exists(python_config):
         python_config = readCommand(['which', 'python-config'],

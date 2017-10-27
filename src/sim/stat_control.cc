@@ -111,6 +111,7 @@ struct Global
     Stats::Formula hostInstRate;
     Stats::Formula hostOpRate;
     Stats::Formula hostTickRate;
+    Stats::Formula IPC;
     Stats::Value hostMemory;
     Stats::Value hostSeconds;
 
@@ -196,10 +197,17 @@ Global::Global()
         .precision(0)
         ;
 
+    IPC
+        .name("IPC")
+        .desc("Instructions per cycle")
+        .precision(4)
+        ;
+
     simSeconds = simTicks / simFreq;
     hostInstRate = simInsts / hostSeconds;
     hostOpRate = simOps / hostSeconds;
     hostTickRate = simTicks / hostSeconds;
+    IPC = simInsts / (simTicks / 1000);
 
     registerResetCallback(&simTicksReset);
 }
