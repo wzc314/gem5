@@ -56,6 +56,7 @@ PacketQueue::PacketQueue(EventManager& _em, const std::string& _label,
       _disableSanityCheck(disable_sanity_check),
       label(_label), waitingOnRetry(false)
 {
+    disableSanityCheck();
 }
 
 PacketQueue::~PacketQueue()
