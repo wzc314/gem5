@@ -21,7 +21,7 @@ alpha_suffix = '_base.i386-m32-gcc42-nn'
 #400.perlbench
 perlbench_run_dir = cpu2006_dir + \
         '400.perlbench/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Perlbench(LiveProcess):
+class Perlbench(Process):
     executable = perlbench_run_dir + 'perlbench' + alpha_suffix
     cwd = perlbench_run_dir
     cmd = [executable] + ['-I.', '-I./lib', 'attrs.pl']
@@ -31,7 +31,7 @@ class Perlbench(LiveProcess):
 #401.bzip2
 bzip2_run_dir = cpu2006_dir + \
         '401.bzip2/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Bzip2(LiveProcess):
+class Bzip2(Process):
     executable = bzip2_run_dir + 'bzip2' + alpha_suffix
     cmd = [executable] + ['input.program', '1']
     cwd = bzip2_run_dir
@@ -52,7 +52,7 @@ class Bzip2(LiveProcess):
 
 #403.gcc
 gcc_run_dir = cpu2006_dir + '403.gcc/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Gcc(LiveProcess):
+class Gcc(Process):
     executable = gcc_run_dir + 'gcc' + alpha_suffix
     cmd = [executable] + ['cccp.i', '-o', 'cccp.s']
     cwd = gcc_run_dir
@@ -62,7 +62,7 @@ class Gcc(LiveProcess):
 #410.bwaves
 bwaves_run_dir = cpu2006_dir + \
         '410.bwaves/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Bwaves(LiveProcess):
+class Bwaves(Process):
     executable = bwaves_run_dir + 'bwaves' + alpha_suffix
     cmd = [executable]
     cwd = bwaves_run_dir
@@ -79,7 +79,7 @@ class Bwaves(LiveProcess):
 #416.gamess
 gamess_run_dir = cpu2006_dir + \
         '416.gamess/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Gamess(LiveProcess):
+class Gamess(Process):
     executable = gamess_run_dir + 'gamess' + alpha_suffix
     cmd = [executable]
     cwd = gamess_run_dir
@@ -102,7 +102,7 @@ class Gamess(LiveProcess):
 
 #429.mcf
 mcf_run_dir = cpu2006_dir + '429.mcf/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Mcf(LiveProcess):
+class Mcf(Process):
     executable = mcf_run_dir + 'mcf' + alpha_suffix
     cmd = [executable] + ['inp.in']
     cwd = mcf_run_dir
@@ -119,7 +119,7 @@ class Mcf(LiveProcess):
 #433.milc
 milc_run_dir = cpu2006_dir + \
         '433.milc/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Milc(LiveProcess):
+class Milc(Process):
     executable = milc_run_dir + 'milc' + alpha_suffix
     cmd = [executable]
     cwd = milc_run_dir
@@ -139,7 +139,7 @@ class Milc(LiveProcess):
 #434.zeusmp
 zeusmp_run_dir = cpu2006_dir + \
         '434.zeusmp/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Zeusmp(LiveProcess):
+class Zeusmp(Process):
     executable = zeusmp_run_dir + 'zeusmp' + alpha_suffix
     cmd = [executable]
     cwd = zeusmp_run_dir
@@ -156,7 +156,7 @@ class Zeusmp(LiveProcess):
 #435.gromacs
 gromacs_run_dir = cpu2006_dir + \
         '435.gromacs/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Gromacs(LiveProcess):
+class Gromacs(Process):
     executable = gromacs_run_dir + 'gromacs' + alpha_suffix
     cmd = [executable] + ['-silent','-deffnm', 'gromacs', '-nice','0']
     cwd = gromacs_run_dir
@@ -166,7 +166,7 @@ class Gromacs(LiveProcess):
 #436.cactusADM
 cactusADM_run_dir = cpu2006_dir + \
         '436.cactusADM/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class CactusADM(LiveProcess):
+class CactusADM(Process):
     executable = cactusADM_run_dir + 'cactusADM' + alpha_suffix
     cmd = [executable] + [cactusADM_run_dir + 'benchADM.par']
     cwd = cactusADM_run_dir
@@ -176,7 +176,7 @@ class CactusADM(LiveProcess):
 #437.leslie3d
 leslie3d_run_dir = cpu2006_dir + \
         '437.leslie3d/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Leslie3d(LiveProcess):
+class Leslie3d(Process):
     executable = leslie3d_run_dir + 'leslie3d' + alpha_suffix
     cmd = [executable]
     cwd = leslie3d_run_dir
@@ -196,7 +196,7 @@ class Leslie3d(LiveProcess):
 #444.namd
 namd_run_dir = cpu2006_dir + \
         '444.namd/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Namd(LiveProcess):
+class Namd(Process):
     executable = namd_run_dir + 'namd' + alpha_suffix
     cmd = [executable] + ['--input', 'namd.input', '--output', 'namd.out',
             '--iterations', '1']
@@ -207,7 +207,7 @@ class Namd(LiveProcess):
 #445.gobmk
 gobmk_run_dir = cpu2006_dir + \
         '445.gobmk/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Gobmk(LiveProcess):
+class Gobmk(Process):
     executable = gobmk_run_dir + 'gobmk' + alpha_suffix
     cmd = [executable] + ['--quiet','--mode', 'gtp']
     cwd = gobmk_run_dir
@@ -236,7 +236,7 @@ class Gobmk(LiveProcess):
 #447.dealII
 dealII_run_dir = cpu2006_dir + \
         '447.dealII/run/run_base_test_i386-m32-gcc42-nn.0000/'
-dealII=LiveProcess()
+dealII=Process()
 dealII.executable = dealII_run_dir + 'dealII' + alpha_suffix
 ####### NOT WORKING #########
 
@@ -251,7 +251,7 @@ dealII.errout = out_dir + 'dealII.err'
 #450.soplex
 soplex_run_dir = cpu2006_dir + \
         '450.soplex/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Soplex(LiveProcess):
+class Soplex(Process):
     executable = soplex_run_dir + 'soplex' + alpha_suffix
     cmd = [executable] + ['-m10000', soplex_run_dir + 'test.mps']
     cwd = out_dir
@@ -269,7 +269,7 @@ class Soplex(LiveProcess):
 #453.povray
 povray_run_dir = cpu2006_dir + \
         '453.povray/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Povray(LiveProcess):
+class Povray(Process):
     executable = povray_run_dir + 'povray' + alpha_suffix
     cmd = [executable] + ['SPEC-benchmark-test.ini']
     cwd = povray_run_dir
@@ -286,7 +286,7 @@ class Povray(LiveProcess):
 #454.calculix
 calculix_run_dir = cpu2006_dir + \
         '454.calculix/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Calculix(LiveProcess):
+class Calculix(Process):
     executable = calculix_run_dir + 'calculix' + alpha_suffix
     cmd = [executable] + ['-i', 'beampic']
     cwd = calculix_run_dir
@@ -303,7 +303,7 @@ class Calculix(LiveProcess):
 #456.hmmer
 hmmer_run_dir = cpu2006_dir + \
         '456.hmmer/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Hmmer(LiveProcess):
+class Hmmer(Process):
     executable = hmmer_run_dir + 'hmmer' + alpha_suffix
     cmd = [executable] + ['--fixed', '0', '--mean', '325', '--num', '45000',
             '--sd', '200', '--seed', '0', hmmer_run_dir + 'bombesin.hmm']
@@ -314,7 +314,7 @@ class Hmmer(LiveProcess):
 #458.sjeng
 sjeng_run_dir = cpu2006_dir + \
         '458.sjeng/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Sjeng(LiveProcess):
+class Sjeng(Process):
     executable = sjeng_run_dir + 'sjeng' + alpha_suffix
     cmd = [executable] + [sjeng_run_dir + 'test.txt']
     cwd = sjeng_run_dir
@@ -331,7 +331,7 @@ class Sjeng(LiveProcess):
 #459.GemsFDTD
 GemsFDTD_run_dir = cpu2006_dir + \
         '459.GemsFDTD/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class GemsFDTD(LiveProcess):
+class GemsFDTD(Process):
     executable = GemsFDTD_run_dir + 'GemsFDTD' + alpha_suffix
     cmd = [executable]
     cwd = GemsFDTD_run_dir
@@ -348,7 +348,7 @@ class GemsFDTD(LiveProcess):
 #462.libquantum
 libquantum_run_dir = cpu2006_dir + \
         '462.libquantum/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Libquantum(LiveProcess):
+class Libquantum(Process):
     executable = libquantum_run_dir + 'libquantum' + alpha_suffix
     cmd = [executable] + ['33','5']
     cwd = libquantum_run_dir
@@ -365,7 +365,7 @@ class Libquantum(LiveProcess):
 #464.h264ref
 h264ref_run_dir = cpu2006_dir + \
         '464.h264ref/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class H264ref(LiveProcess):
+class H264ref(Process):
     executable = h264ref_run_dir + 'h264ref' + alpha_suffix
     cmd = [executable] + ['-d', h264ref_run_dir + \
             'foreman_test_encoder_baseline.cfg']
@@ -376,7 +376,7 @@ class H264ref(LiveProcess):
 #465.tonto
 tonto_run_dir = cpu2006_dir + \
         '465.tonto/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Tonto(LiveProcess):
+class Tonto(Process):
     executable = tonto_run_dir + 'tonto' + alpha_suffix
     cmd = [executable]
     cwd = tonto_run_dir
@@ -394,7 +394,7 @@ class Tonto(LiveProcess):
 #470.lbm
 lbm_run_dir = cpu2006_dir + \
         '470.lbm/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Lbm(LiveProcess):
+class Lbm(Process):
     executable = lbm_run_dir + 'lbm' + alpha_suffix
     cmd = [executable] + ['20', lbm_run_dir + 'reference.dat',
             '0', '1', lbm_run_dir + '100_100_130_cf_a.of']
@@ -405,7 +405,7 @@ class Lbm(LiveProcess):
 #471.omnetpp
 omnetpp_run_dir = cpu2006_dir + \
         '471.omnetpp/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Omnetpp(LiveProcess):
+class Omnetpp(Process):
     executable = omnetpp_run_dir + 'omnetpp' + alpha_suffix
     cmd = [executable] + [omnetpp_run_dir + 'omnetpp.ini']
     cwd = omnetpp_run_dir
@@ -422,7 +422,7 @@ class Omnetpp(LiveProcess):
 #473.astar
 astar_run_dir = cpu2006_dir + \
         '473.astar/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Astar(LiveProcess):
+class Astar(Process):
     executable = astar_run_dir + 'astar' + alpha_suffix
     cmd = [executable] + [astar_run_dir + 'lake.cfg']
     cwd = astar_run_dir
@@ -439,7 +439,7 @@ class Astar(LiveProcess):
 #481.wrf
 wrf_run_dir = cpu2006_dir + \
         '481.wrf/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Wrf(LiveProcess):
+class Wrf(Process):
     executable = wrf_run_dir + 'wrf' + alpha_suffix
     cmd = [executable]
     cwd = wrf_run_dir
@@ -456,7 +456,7 @@ class Wrf(LiveProcess):
 #482.sphinx3
 sphinx3_run_dir = cpu2006_dir + \
         '482.sphinx3/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Sphinx3(LiveProcess):
+class Sphinx3(Process):
     executable = sphinx3_run_dir + 'sphinx_livepretend' + alpha_suffix
     cmd = [executable] + ['ctlfile', '.', sphinx3_run_dir + 'args.an4']
     cwd = sphinx3_run_dir
@@ -466,7 +466,7 @@ class Sphinx3(LiveProcess):
 #483.xalancbmk
 xalancbmk_run_dir = cpu2006_dir + \
         '483.xalancbmk/run/run_base_test_i386-m32-gcc42-nn.0000/'
-xalancbmk=LiveProcess()
+xalancbmk=Process()
 xalancbmk.executable = xalancbmk_run_dir + 'xalancbmk' + alpha_suffix
 xalancbmk.output = out_dir + 'xalancbmk.out'
 xalancbmk.errout = out_dir + 'xalancbmk.err'
@@ -474,7 +474,7 @@ xalancbmk.errout = out_dir + 'xalancbmk.err'
 #998.specrand
 specrand_i_run_dir = cpu2006_dir + \
         '998.specrand/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Specrand_i(LiveProcess):
+class Specrand_i(Process):
     executable = specrand_i_run_dir + 'specrand' + alpha_suffix
     cmd = [executable] + ['324342', '24239']
     cwd = specrand_i_run_dir
@@ -491,7 +491,7 @@ class Specrand_i(LiveProcess):
 #999.specrand
 specrand_f_run_dir = cpu2006_dir + \
         '999.specrand/run/run_base_test_i386-m32-gcc42-nn.0000/'
-class Specrand_f(LiveProcess):
+class Specrand_f(Process):
     executable = specrand_f_run_dir + 'specrand' + alpha_suffix
     cmd = [executable] + ['324342', '24239']
     cwd = specrand_f_run_dir

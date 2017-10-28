@@ -74,56 +74,6 @@ def is_kvm_cpu(cpu_class):
     return have_kvm_support and cpu_class != None and \
         issubclass(cpu_class, BaseKvmCPU)
 
-def get_processes(options):
-    """Interprets provided options and returns a list of processes"""
-
-    multiprocesses = []
-    inputs = []
-    outputs = []
-    errouts = []
-    pargs = []
-
-    workloads = options.cmd.split(';')
-    if options.input != "":
-        inputs = options.input.split(';')
-    if options.output != "":
-        outputs = options.output.split(';')
-    if options.errout != "":
-        errouts = options.errout.split(';')
-    if options.options != "":
-        pargs = options.options.split(';')
-
-    idx = 0
-    for wrkld in workloads:
-        process = LiveProcess()
-        process.executable = wrkld
-        process.cwd = os.getcwd()
-
-        if options.env:
-            with open(options.env, 'r') as f:
-                process.env = [line.rstrip() for line in f]
-
-        if len(pargs) > idx:
-            process.cmd = [wrkld] + pargs[idx].split()
-        else:
-            process.cmd = [wrkld]
-
-        if len(inputs) > idx:
-            process.input = inputs[idx]
-        if len(outputs) > idx:
-            process.output = outputs[idx]
-        if len(errouts) > idx:
-            process.errout = errouts[idx]
-
-        multiprocesses.append(process)
-        idx += 1
-
-    if options.smt:
-        assert(options.cpu_type == "detailed")
-        return multiprocesses, idx
-    else:
-        return multiprocesses, 1
-
 m5.disableAllListeners()
 parser = optparse.OptionParser()
 Options.addCommonOptions(parser)
@@ -146,10 +96,9 @@ if args:
     print "Error: script doesn't take any positional arguments"
     sys.exit(1)
 
-multiprocesses = []
 numThreads = 1
 
-def get_process(benchmark):
+def get_process(benchmark, idx):
     if benchmark == 'perlbench':
         process = spec2006_benchmarks.Perlbench()
     elif benchmark == 'bzip2':
@@ -216,6 +165,7 @@ def get_process(benchmark):
         print >> sys.stderr, "Need --benchmarks switch to specify SPEC \
                 CPU2006 workload. Exiting!\n"
         sys.exit(1)
+    process.pid = 100 + idx
     return process
 
 benchmarks = options.benchmarks.split(',')
@@ -223,35 +173,12 @@ if len(benchmarks) != options.num_cpus:
     print "Number of benchmarks not equal to set num_cpus!"
     sys.exit(1)
 
-multiprocesses = map(get_process, benchmarks)
-
-#if options.bench:
-#    apps = options.bench.split("-")
-#    if len(apps) != options.num_cpus:
-#        print "number of benchmarks not equal to set num_cpus!"
-#        sys.exit(1)
-#
-#    for app in apps:
-#        try:
-#            if buildEnv['TARGET_ISA'] == 'alpha':
-#                exec("workload = %s('alpha', 'tru64', '%s')" % (
-#                        app, options.spec_input))
-#            elif buildEnv['TARGET_ISA'] == 'arm':
-#                exec("workload = %s('arm_%s', 'linux', '%s')" % (
-#                        app, options.arm_iset, options.spec_input))
-#            else:
-#                exec("workload = %s(buildEnv['TARGET_ISA', 'linux', '%s')" % (
-#                        app, options.spec_input))
-#            multiprocesses.append(workload.makeLiveProcess())
-#        except:
-#            print >>sys.stderr, "Unable to find workload for %s: %s" % (
-#                    buildEnv['TARGET_ISA'], app)
-#            sys.exit(1)
-#elif options.cmd:
-#    multiprocesses, numThreads = get_processes(options)
-#else:
-#    print >> sys.stderr, "No workload specified. Exiting!\n"
-#    sys.exit(1)
+multiprocesses = []
+idx = 0
+for benchmark in benchmarks:
+    process = get_process(benchmark, idx)
+    multiprocesses.append(process)
+    idx += 1
 
 
 (CPUClass, test_mem_mode, FutureClass) = Simulation.setCPUClass(options)
@@ -318,24 +245,6 @@ if options.simpoint_profile:
     if np > 1:
         fatal("SimPoint generation not supported with more than one CPUs")
 
-#for i in xrange(np):
-#    if options.smt:
-#        system.cpu[i].workload = multiprocesses
-#    elif len(multiprocesses) == 1:
-#        system.cpu[i].workload = multiprocesses[0]
-#    else:
-#        system.cpu[i].workload = multiprocesses[i]
-#
-#    if options.fastmem:
-#        system.cpu[i].fastmem = True
-#
-#    if options.simpoint_profile:
-#        system.cpu[i].addSimPointProbe(options.simpoint_interval)
-#
-#    if options.checker:
-#        system.cpu[i].addCheckerCpu()
-#
-#    system.cpu[i].createThreads()
 for i in xrange(np):
     system.cpu[i].workload = multiprocesses[i]
     print 'cpu[%d] workload cmd --> %s' % (i, multiprocesses[i].cmd)
