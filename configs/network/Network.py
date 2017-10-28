@@ -40,6 +40,8 @@ def define_options(parser):
                       help="check configs/topologies for complete set")
     parser.add_option("--mesh-rows", type="int", default=0,
                       help="the number of rows in the mesh topology")
+    parser.add_option("--mesh-columns", type="int", default=0,
+                      help="the number of columns in the 3D mesh topology")
     parser.add_option("--network", type="choice", default="simple",
                       choices=['simple', 'garnet2.0'],
                       help="'simple'|'garnet2.0'")
