@@ -1,5 +1,14 @@
-# Copyright (c) 2006 The Regents of The University of Michigan
-# All rights reserved.
+# Copyright (c) 2017 ARM Limited
+# All rights reserved
+#
+# The license below extends only to copyright in the software and shall
+# not be construed as granting a license to any other intellectual
+# property including but not limited to intellectual property relating
+# to a hardware implementation of the functionality of the software
+# licensed hereunder.  You may use the software subject to the license
+# terms below provided that you ensure that this notice is replicated
+# unmodified and in its entirety in all distributions of the software,
+# modified or unmodified, in source code or in binary form.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
@@ -24,44 +33,11 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Authors: Ali Saidi
+# Authors: Giacomo Travaglini
 
-import os, sys
+from m5.SimObject import SimObject
+from m5.params import *
 
-config_path = os.path.dirname(os.path.abspath(__file__))
-config_root = os.path.dirname(config_path)
-
-class PathSearchFunc(object):
-    _sys_paths = None
-
-    def __init__(self, *subdirs):
-        self._subdir = os.path.join(*subdirs)
-
-    def __call__(self, filename):
-        if self._sys_paths is None:
-            try:
-                paths = os.environ['M5_PATH'].split(':')
-            except KeyError:
-                paths = [ '/dist/m5/system', '/n/poolfs/z/dist/m5/system' ]
-
-            # expand '~' and '~user' in paths
-            paths = map(os.path.expanduser, paths)
-
-            # filter out non-existent directories
-            paths = filter(os.path.isdir, paths)
-
-            if not paths:
-                raise IOError, "Can't find a path to system files."
-
-            self._sys_paths = paths
-
-        filepath = os.path.join(self._subdir, filename)
-        paths = (os.path.join(p, filepath) for p in self._sys_paths)
-        try:
-            return next(p for p in paths if os.path.exists(p))
-        except StopIteration:
-            raise IOError, "Can't find file '%s' on path." % filename
-
-disk = PathSearchFunc('disks')
-binary = PathSearchFunc('binaries')
-script = PathSearchFunc('boot')
+# Image Formats:
+# Auto option will let gem5 to choose the image format it prefers.
+class ImageFormat(Enum): vals = ['Auto', 'Bitmap', 'Png']
