@@ -545,13 +545,13 @@ class SystemError : public ArmFaultVals<SystemError>
     bool routeToHyp(ThreadContext *tc) const override;
 };
 
-// A fault that flushes the pipe, excluding the faulting instructions
-class FlushPipe : public ArmFaultVals<FlushPipe>
+/// System error (AArch64 only)
+class SoftwareBreakpoint : public ArmFaultVals<SoftwareBreakpoint>
 {
   public:
-    FlushPipe() {}
-    void invoke(ThreadContext *tc, const StaticInstPtr &inst =
-                StaticInst::nullStaticInstPtr) override;
+    SoftwareBreakpoint(ExtMachInst _mach_inst, uint32_t _iss);
+
+    bool routeToHyp(ThreadContext *tc) const override;
 };
 
 // A fault that flushes the pipe, excluding the faulting instructions
@@ -592,7 +592,7 @@ template<> ArmFault::FaultVals ArmFaultVals<SecureMonitorTrap>::vals;
 template<> ArmFault::FaultVals ArmFaultVals<PCAlignmentFault>::vals;
 template<> ArmFault::FaultVals ArmFaultVals<SPAlignmentFault>::vals;
 template<> ArmFault::FaultVals ArmFaultVals<SystemError>::vals;
-template<> ArmFault::FaultVals ArmFaultVals<FlushPipe>::vals;
+template<> ArmFault::FaultVals ArmFaultVals<SoftwareBreakpoint>::vals;
 template<> ArmFault::FaultVals ArmFaultVals<ArmSev>::vals;
 
 

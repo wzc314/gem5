@@ -1,6 +1,6 @@
 /*
  * Copyright 2014 Google, Inc.
- * Copyright (c) 2012-2013,2015 ARM Limited
+ * Copyright (c) 2012-2013,2015,2017 ARM Limited
  * All rights reserved.
  *
  * The license below extends only to copyright in the software and shall
@@ -101,6 +101,9 @@ AtomicSimpleCPU::~AtomicSimpleCPU()
 DrainState
 AtomicSimpleCPU::drain()
 {
+    // Deschedule any power gating event (if any)
+    deschedulePowerGatingEvent();
+
     if (switchedOut())
         return DrainState::Drained;
 
@@ -163,6 +166,9 @@ AtomicSimpleCPU::drainResume()
             threadInfo[tid]->notIdleFraction = 0;
         }
     }
+
+    // Reschedule any power gating event (if any)
+    schedulePowerGatingEvent();
 }
 
 bool
@@ -222,7 +228,6 @@ AtomicSimpleCPU::activateContext(ThreadID thread_num)
     Cycles delta = ticksToCycles(threadInfo[thread_num]->thread->lastActivate -
                                  threadInfo[thread_num]->thread->lastSuspend);
     numCycles += delta;
-    ppCycles->notify(delta);
 
     if (!tickEvent.scheduled()) {
         //Make sure ticks are still on multiples of cycles
@@ -556,7 +561,7 @@ AtomicSimpleCPU::tick()
 
     for (int i = 0; i < width || locked; ++i) {
         numCycles++;
-        ppCycles->notify(1);
+        updateCycleCounters(BaseCPU::CPU_STATE_ON);
 
         if (!curStaticInst || !curStaticInst->isDelayedCommit()) {
             checkForInterrupts();
